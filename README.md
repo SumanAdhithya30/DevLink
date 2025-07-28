@@ -104,10 +104,10 @@ Ready to deploy on:
 
 ## 🧑‍💻 Author
 
-Made with ❤️ by **[Your Name]**
+Made with ❤️ by **[SUMAN ADHITHYA]**
 
-- GitHub: [@your-username](https://github.com/your-username)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/your-profile)
+- GitHub: [@SumanAdhithya30](https://github.com/SumanAdhithya30)
+- LinkedIn: [Suman Adhithya]([https://linkedin.com/in/your-profile](https://www.linkedin.com/in/suman-adhithya-80a96b269/))
 
 ---
 
