@@ -1,15 +1,13 @@
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
-
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -20,27 +18,24 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    try{
+    try {
       const response = await axios.post("http://localhost:5000/api/auth/login", formData);
-
       localStorage.setItem("token", response.data.token);
-
       console.log("Login Successful:", response.data);
       navigate("/dashboard");
-
-    } catch(error) {
+    } catch (error) {
       console.error("Login Error:", error);
       setError(error.response?.data?.message || "Login failed. Please try again.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-200 via-blue-100 to-pink-200">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm"
+        className="bg-white/30 backdrop-blur-lg shadow-xl p-10 rounded-2xl w-full max-w-sm"
       >
-        <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
+        <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Welcome Back</h2>
 
         <input
           type="email"
@@ -48,8 +43,8 @@ const Login = () => {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+          className="w-full px-4 py-3 mb-4 border rounded-md bg-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <input
@@ -58,25 +53,25 @@ const Login = () => {
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
+          className="w-full px-4 py-3 mb-4 border rounded-md bg-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+          className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition duration-300"
         >
           Login
         </button>
 
-        <p className="mt-4 text-center text-sm">
-          Don't have an account?{" "}
-          <a href="/register" className="text-blue-500 hover:underline">
+        <p className="mt-4 text-center text-sm text-gray-700">
+          Don’t have an account?{" "}
+          <a href="/register" className="text-blue-600 hover:underline">
             Register
           </a>
         </p>
 
-        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+        {error && <p className="text-red-600 text-center mt-4">{error}</p>}
       </form>
     </div>
   );
