@@ -1,11 +1,18 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ 
@@ -14,10 +21,20 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
-    // You'll connect to backend here later
+    setError(""); 
+
+    try{
+      const response  = await axios.post("http://localhost:5000/api/auth/register", formData);
+      console.log("Registration Successfull:", response.data);
+      navigate("/login");
+    }
+    catch(err){
+      console.error("Registration Error:", err);
+      setError(err.Response?.data?.message || "Registration failed. Please try again.");
+    }
   };
 
   return (
@@ -30,9 +47,9 @@ const Register = () => {
 
         <input
           type="text"
-          name="name"
+          name="username"
           placeholder="Full Name"
-          value={formData.name}
+          value={formData.username}
           onChange={handleChange}
           className="w-full p-3 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
@@ -62,6 +79,8 @@ const Register = () => {
         >
           Register
         </button>
+
+        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
       </form>
     </div>
   );
