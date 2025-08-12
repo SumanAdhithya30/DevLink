@@ -6,14 +6,14 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Developers from "./pages/Developers";
+import PrivateRoute from "./components/PrivateRoute";
 
 function AppContent() {
   const location = useLocation();
-  const hideNavbarOn = ["/login", "/register"]; // pages without navbar
+  const hideNavbarOn = ["/login", "/register"]; // Hide navbar on these routes
 
   return (
     <>
-      {/* Conditionally render Navbar */}
       {!hideNavbarOn.includes(location.pathname) && <Navbar />}
 
       <Routes>
@@ -21,10 +21,23 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Dashboard routes */}
-        <Route path="/dashboard" element={<Dashboard />}>
-          <Route path="developers" element={<Developers />} />
-        </Route>
+        {/* Protected routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/developers"
+          element={
+            <PrivateRoute>
+              <Developers />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </>
   );
@@ -37,7 +50,6 @@ export default function App() {
     </Router>
   );
 }
-
 
 
 // import { BrowserRouter as Router,Routes, Route } from "react-router-dom";
