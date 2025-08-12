@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import Developers from "./pages/Developers";
 import PrivateRoute from "./components/PrivateRoute";
 
 function AppContent() {
@@ -21,20 +20,12 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected routes */}
+        {/* Protected routes - Only one dashboard route that handles all sub-routes */}
         <Route
-          path="/dashboard"
+          path="/dashboard/*"
           element={
             <PrivateRoute>
               <Dashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/dashboard/developers"
-          element={
-            <PrivateRoute>
-              <Developers />
             </PrivateRoute>
           }
         />
