@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
+
 function AppContent() {
   const location = useLocation();
   const hideNavbarOn = ["/login", "/register"]; // Hide navbar on these routes
