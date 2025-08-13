@@ -11,6 +11,7 @@ const developerSchema = new mongoose.Schema({
     phone: String,
     github: String,
     linkedin: String,
+    domain: String,
     techstack: [String],
 },{ timestamps: true });
 
