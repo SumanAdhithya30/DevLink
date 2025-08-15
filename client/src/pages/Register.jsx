@@ -1,6 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+// Import the new API service function
+import { register } from "../services/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,7 +21,8 @@ const Register = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/register", formData);
+      // Use the new, clean register function
+      const response = await register(formData);
       console.log("Registration Successful:", response.data);
       navigate("/login");
     } catch (err) {
@@ -36,7 +38,6 @@ const Register = () => {
         className="bg-white/30 backdrop-blur-lg shadow-xl p-10 rounded-2xl w-full max-w-md"
       >
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Create Account</h2>
-
         <input
           type="text"
           name="username"
@@ -64,14 +65,12 @@ const Register = () => {
           className="w-full mb-6 p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/70"
           required
         />
-
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all duration-300"
         >
           Sign Up
         </button>
-
         {error && <p className="text-red-600 text-center mt-4">{error}</p>}
       </form>
     </div>

@@ -1,12 +1,13 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+// Import the new API service function
+import { login } from "../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const [error, setError] = useState("");
 
@@ -19,7 +20,8 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", formData);
+      // Use the new, clean login function
+      const response = await login(formData);
       localStorage.setItem("token", response.data.token);
       console.log("Login Successful:", response.data);
       navigate("/dashboard");
@@ -36,7 +38,6 @@ const Login = () => {
         className="bg-white/30 backdrop-blur-lg shadow-xl p-10 rounded-2xl w-full max-w-sm"
       >
         <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Welcome Back</h2>
-
         <input
           type="email"
           name="email"
@@ -46,7 +47,6 @@ const Login = () => {
           className="w-full px-4 py-3 mb-4 border rounded-md bg-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-
         <input
           type="password"
           name="password"
@@ -56,21 +56,18 @@ const Login = () => {
           className="w-full px-4 py-3 mb-4 border rounded-md bg-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition duration-300"
         >
           Login
         </button>
-
         <p className="mt-4 text-center text-sm text-gray-700">
           Don’t have an account?{" "}
           <a href="/register" className="text-blue-600 hover:underline">
             Register
           </a>
         </p>
-
         {error && <p className="text-red-600 text-center mt-4">{error}</p>}
       </form>
     </div>

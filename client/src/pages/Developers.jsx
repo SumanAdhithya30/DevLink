@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 // These functions don't rely on component state or props, so they can be defined once
 // outside the component render cycle. This makes them stable by default.
 
-const API_BASE_URL = "http://localhost:5000/api/developers";
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/developers`;
 
 const getAuthToken = () => {
   return localStorage.getItem("token");
