@@ -1,26 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
-
-// --- Helper Functions Moved Outside Component ---
-// These functions don't rely on component state or props, so they can be defined once
-// outside the component render cycle. This makes them stable by default.
-
-const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/developers`;
-
-const getAuthToken = () => {
-  return localStorage.getItem("token");
-};
-
-const getAxiosConfig = () => ({
-  headers: {
-    Authorization: `Bearer ${getAuthToken()}`,
-    "Content-Type": "application/json",
-  },
-});
-
-// --- Component Definition ---
+// Import all the new developer API functions
+import {
+  getDevelopers,
+  addDeveloper,
+  updateDeveloper,
+  deleteDeveloper,
+} from "../services/api";
 
 const Developers = () => {
   const [developers, setDevelopers] = useState([]);
@@ -39,12 +26,10 @@ const Developers = () => {
     techstack: "",
   });
 
-  // This function must be inside the component because it uses `setDevelopers`.
-  // We wrap it in `useCallback` to make sure it doesn't get re-created on every render,
-  // which would cause an infinite loop in our `useEffect`.
   const fetchDevelopers = useCallback(async () => {
     try {
-      const res = await axios.get(API_BASE_URL, getAxiosConfig());
+      // Use the new getDevelopers function
+      const res = await getDevelopers();
       setDevelopers(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Error fetching developers:", err);
@@ -53,24 +38,20 @@ const Developers = () => {
       }
       setDevelopers([]);
     }
-  }, []); // This dependency array is empty because its dependencies (getAxiosConfig, etc.) are stable.
+  }, []);
 
-  // The Effect Hook that runs once on component mount.
-  // It now correctly lists `fetchDevelopers` as a dependency.
   useEffect(() => {
     fetchDevelopers();
   }, [fetchDevelopers]);
 
-  // Handle input changes
   const handleChange = (e) => {
     setNewDeveloper({ ...newDeveloper, [e.target.name]: e.target.value });
   };
 
-  // --- CRUD Handler Functions wrapped in useCallback for stability ---
-
   const handleAddDeveloper = useCallback(async () => {
     try {
-      await axios.post(API_BASE_URL, newDeveloper, getAxiosConfig());
+      // Use the new addDeveloper function
+      await addDeveloper(newDeveloper);
       toast.success("Developer added successfully");
       setShowAddModal(false);
       setNewDeveloper({
@@ -85,13 +66,10 @@ const Developers = () => {
 
   const handleEditDeveloper = useCallback(async () => {
     try {
-      await axios.put(
-        `${API_BASE_URL}/${selectedDeveloper._id}`,
-        newDeveloper,
-        getAxiosConfig()
-      );
+      // Use the new updateDeveloper function
+      await updateDeveloper(selectedDeveloper._id, newDeveloper);
       toast.success("Developer updated successfully");
-      setShowEditModal(false);
+setShowEditModal(false);
       fetchDevelopers();
     } catch (err) {
       console.error("Error updating developer:", err);
@@ -102,7 +80,8 @@ const Developers = () => {
   const handleDeleteDeveloper = useCallback(async (id) => {
     if (window.confirm("Are you sure you want to delete this developer?")) {
       try {
-        await axios.delete(`${API_BASE_URL}/${id}`, getAxiosConfig());
+        // Use the new deleteDeveloper function
+        await deleteDeveloper(id);
         toast.success("Developer deleted successfully");
         fetchDevelopers();
       } catch (err) {
@@ -111,7 +90,10 @@ const Developers = () => {
       }
     }
   }, [fetchDevelopers]);
-
+  
+  // The rest of your component remains exactly the same!
+  // No changes are needed below this line.
+  
   const openEditModal = useCallback((dev) => {
     setSelectedDeveloper(dev);
     setNewDeveloper({
@@ -119,7 +101,7 @@ const Developers = () => {
       linkedin: dev.linkedin, domain: dev.domain, techstack: dev.techstack,
     });
     setShowEditModal(true);
-  }, []); // State setters are stable, so no dependencies needed here.
+  }, []);
 
   const renderModal = (title, fields, onConfirm, onCancel, confirmText, confirmColor) => (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500/50 backdrop-blur-sm">
@@ -208,6 +190,7 @@ const Developers = () => {
                   <div>
                     <h2 className="text-xl font-bold text-gray-800">{dev.name}</h2>
                     <p className="text-md text-gray-600 mt-1">{dev.domain}</p>
+
                   </div>
                   <div className="flex justify-end gap-3 mt-6">
                     <button

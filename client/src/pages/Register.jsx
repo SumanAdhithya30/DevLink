@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-// Import the new API service function
+import { useNavigate, Link } from "react-router-dom"; // Import Link
 import { register } from "../services/api";
 
 const Register = () => {
@@ -21,7 +20,6 @@ const Register = () => {
     setError("");
 
     try {
-      // Use the new, clean register function
       const response = await register(formData);
       console.log("Registration Successful:", response.data);
       navigate("/login");
@@ -71,6 +69,15 @@ const Register = () => {
         >
           Sign Up
         </button>
+
+        {/* --- THIS IS THE NEW ADDITION --- */}
+        <p className="mt-4 text-center text-sm text-gray-700">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 hover:underline font-semibold">
+            Login
+          </Link>
+        </p>
+
         {error && <p className="text-red-600 text-center mt-4">{error}</p>}
       </form>
     </div>
