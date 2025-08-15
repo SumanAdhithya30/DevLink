@@ -4,28 +4,29 @@ const Developer = require('../models/Developer');
 // handle search, domain, and techstack query parameters
 exports.getDevelopers = async (req, res) => {
   try {
-
     const { domain, techstack, search } = req.query;
-
     let filter = { user: req.user.id };
 
-    // Add domain to the filter object if the domain query parameter exists
     if (domain) {
-      filter.domain = domain;
+      // Use regex for partial, case-insensitive domain matching
+      filter.domain = { $regex: domain, $options: 'i' };
     }
 
-    // Add techstack to filter. It requires the developer to have ALL specified techs.
     if (techstack) {
       const techStackArray = techstack.split(',');
-      filter.techstack = { $all: techStackArray };
+      
+      // --- THIS IS THE FIX ---
+      // Create a case-insensitive regex for each tech term
+      const techRegexArray = techStackArray.map(tech => new RegExp(tech.trim(), 'i'));
+
+      // Use the $all operator to ensure the developer has all the specified technologies
+      filter.techstack = { $all: techRegexArray };
     }
 
-    // Add a general search term filter. It searches across multiple fields.
     if (search) {
       filter.$or = [
-        { name: { $regex: search, $options: 'i' } },      
+        { name: { $regex: search, $options: 'i' } },
         { email: { $regex: search, $options: 'i' } },
-        { domain: { $regex: search, $options: 'i' } },
       ];
     }
 
