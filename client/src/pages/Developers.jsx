@@ -122,7 +122,7 @@ const Developers = () => {
   }, []); // State setters are stable, so no dependencies needed here.
 
   const renderModal = (title, fields, onConfirm, onCancel, confirmText, confirmColor) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500/50 backdrop-blur-sm">
       <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md transform transition-all">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">{title}</h2>
         <div className="space-y-4">
@@ -172,7 +172,6 @@ const Developers = () => {
   ];
 
   return (
-    // ... your JSX remains the same
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white shadow-md rounded-xl p-6 mb-8">
@@ -246,7 +245,49 @@ const Developers = () => {
         </div>
         {showAddModal && renderModal( "Add New Developer", formFields, handleAddDeveloper, () => setShowAddModal(false), "Add Developer", "bg-blue-600")}
         {showEditModal && renderModal( "Edit Developer Details", formFields, handleEditDeveloper, () => setShowEditModal(false), "Update Developer", "bg-green-600")}
-        {showViewModal && selectedDeveloper && ( <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm"> <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md transform transition-all"> <h2 className="text-2xl font-bold text-gray-800 mb-4">{selectedDeveloper.name}</h2> <div className="space-y-3 text-gray-700"> <p><strong>Email:</strong> {selectedDeveloper.email}</p> <p><strong>Phone:</strong> {selectedDeveloper.phone}</p> <p><strong>Domain:</strong> {selectedDeveloper.domain}</p> <p><strong>Tech Stack:</strong> {selectedDeveloper.techstack}</p> <p> <strong>GitHub:</strong>{" "} <a href={selectedDeveloper.github} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline" > View Profile </a> </p> <p> <strong>LinkedIn:</strong>{" "} <a href={selectedDeveloper.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline" > View Profile </a> </p> </div> <div className="flex justify-end mt-8"> <button onClick={() => setShowViewModal(false)} className="px-6 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 transition-colors" > Close </button> </div> </div> </div> )}
+        {showViewModal && selectedDeveloper && ( 
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/75"> 
+            <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md transform transition-all"> 
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">{selectedDeveloper.name}</h2> 
+              <div className="space-y-3 text-gray-700"> 
+                  <p><strong>Email:</strong> {selectedDeveloper.email}</p> 
+                  <p><strong>Phone:</strong> {selectedDeveloper.phone}</p> 
+                  <p><strong>Domain:</strong> {selectedDeveloper.domain}</p> 
+                  <p><strong>Tech Stack:</strong> {selectedDeveloper.techstack}</p> 
+                  <p> 
+                      <strong>GitHub:</strong>{" "} 
+                      <a 
+                        href={selectedDeveloper.github} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-blue-500 hover:underline" 
+                      > 
+                        View Profile 
+                      </a> 
+                  </p> 
+                  <p> 
+                      <strong>LinkedIn:</strong>{" "} 
+                      <a 
+                        href={selectedDeveloper.linkedin} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-blue-500 hover:underline" 
+                      > 
+                        View Profile 
+                      </a> 
+                  </p> 
+              </div> 
+              <div className="flex justify-end mt-8"> 
+                <button 
+                  onClick={() => setShowViewModal(false)} 
+                  className="px-6 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 transition-colors" 
+                > 
+                  Close 
+                </button> 
+              </div> 
+            </div> 
+          </div> 
+        )}
       </div>
     </div>
   );
