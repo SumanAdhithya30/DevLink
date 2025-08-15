@@ -26,7 +26,7 @@ export const register = (userData) => apiClient.post('/auth/register', userData)
 export const getMe = () => apiClient.get('/auth/me');
 
 // for dev
-export const getDevelopers = () => apiClient.get('/developers');
+export const getDevelopers = (params) => apiClient.get('/developers', { params });
 export const addDeveloper = (developerData) => apiClient.post('/developers', developerData);
 export const updateDeveloper = (id, developerData) => apiClient.put(`/developers/${id}`, developerData);
 export const deleteDeveloper = (id) => apiClient.delete(`/developers/${id}`);
