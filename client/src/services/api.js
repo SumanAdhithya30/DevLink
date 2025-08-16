@@ -30,5 +30,7 @@ export const getDevelopers = (params) => apiClient.get('/developers', { params }
 export const addDeveloper = (developerData) => apiClient.post('/developers', developerData);
 export const updateDeveloper = (id, developerData) => apiClient.put(`/developers/${id}`, developerData);
 export const deleteDeveloper = (id) => apiClient.delete(`/developers/${id}`);
+export const getDeveloperStats = () => apiClient.get('/developers/stats');
+
 
 export default apiClient;

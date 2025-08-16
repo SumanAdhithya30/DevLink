@@ -4,6 +4,9 @@ import { useNavigate, Routes, Route, Link } from "react-router-dom";
 import { getMe } from "../services/api";
 import Developers from "./Developers";
 
+// --- 1. IMPORT THE NEW DASHBOARDHOME COMPONENT ---
+import DashboardHome from "./DashboardHome";
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -18,7 +21,6 @@ const Dashboard = () => {
     let isMounted = true;
 
     const fetchUser = async () => {
-      // Check for token exists here only for redirection logic
       const token = localStorage.getItem("token");
       if (!token) {
         navigate("/login");
@@ -26,16 +28,13 @@ const Dashboard = () => {
       }
 
       try {
-        // Use the new, clean getMe function
-        // No headers or token logic needed here anymore!
         const res = await getMe();
-
         if (isMounted) {
           setUser(res.data);
         }
       } catch (err) {
         console.error("Error fetching user:", err);
-        handleLogout(); // Logout if the token is invalid
+        handleLogout();
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -50,7 +49,6 @@ const Dashboard = () => {
     };
   }, [navigate, handleLogout]);
   
-  // The rest of your component remains unchanged...
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen text-xl">
@@ -67,8 +65,9 @@ const Dashboard = () => {
           DevLink
         </h1>
         <nav className="flex flex-col p-4 space-y-2">
+          {/* Links updated for consistency */}
           <Link to="/dashboard" className="hover:bg-gray-700 p-2 rounded">
-            Home
+            Dashboard
           </Link>
           <Link to="/dashboard/developers" className="hover:bg-gray-700 p-2 rounded">
             Developers
@@ -90,18 +89,11 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="flex-1 p-6 overflow-auto">
         <Routes>
+          {/* --- 2. UPDATE THE INDEX ROUTE ELEMENT --- */}
+          {/* The old "Welcome" div is replaced with your new analytics component */}
           <Route
             index
-            element={
-              <div>
-                <h2 className="text-3xl font-bold mb-4">
-                  Welcome, {user?.username || "User"}!
-                </h2>
-                <p className="text-gray-600">
-                  Here’s your personalized dashboard.
-                </p>
-              </div>
-            }
+            element={<DashboardHome />}
           />
           <Route path="developers" element={<Developers />} />
         </Routes>
