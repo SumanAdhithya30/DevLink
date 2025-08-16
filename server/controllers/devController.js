@@ -1,5 +1,5 @@
 const Developer = require('../models/Developer');
-
+const mongoose = require('mongoose');
 
 // handle search, domain, and techstack query parameters
 exports.getDevelopers = async (req, res) => {
@@ -112,6 +112,51 @@ exports.deleteDeveloper = async (req, res) => {
     res.json({ msg: 'Developer removed' });
   } catch (err) {
     console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+
+// stats for devs - dashboardpage....
+// stats for devs - dashboardpage....
+exports.getDeveloperStats = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    
+    // Get total developers count
+    const totalDevelopers = await Developer.countDocuments({ user: userId });
+    
+    // Get developers by domain (fixed property name to match frontend)
+    const developersByDomain = await Developer.aggregate([
+      { $match: { user: new mongoose.Types.ObjectId(userId) }},
+      { $group: { _id: "$domain", count: { $sum: 1 } } },
+      { $project: { name: '$_id', value: '$count', _id: 0 } }, // Added _id: 0 to exclude _id field
+    ]);
+
+    // Get top tech skills
+    const topTechSkills = await Developer.aggregate([
+      { $match: { user: new mongoose.Types.ObjectId(userId) } },
+      { $unwind: '$techstack' }, 
+      { $group: { _id: '$techstack', count: { $sum: 1 } } }, 
+      { $sort: { count: -1 } }, 
+      { $limit: 5 },
+      { $project: { name: '$_id', count: '$count', _id: 0 } }, 
+    ]);
+
+    // Log the data for debugging
+    console.log('Stats Data:', {
+      totalDevelopers,
+      developersByDomain,
+      topTechSkills
+    });
+
+    res.json({
+      totalDevelopers,
+      developersByDomain, // Fixed: changed from developerbyDomain to developersByDomain
+      topTechSkills
+    });
+  } catch (err) {
+    console.error('Error in getDeveloperStats:', err.message);
     res.status(500).send('Server Error');
   }
 };

@@ -1,9 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/authMiddleware'); // Make sure this path is correct for your auth middleware
+const auth = require('../middleware/authMiddleware');
 const developerController = require('../controllers/devController');
 
-// All routes in this file are prefixed with '/api/developers' (from your main server file)
+// IMPORTANT: Put more specific routes BEFORE general ones!
+
+// @route    GET api/developers/stats
+// @desc     Get developer statistics for the current user's dashboard
+// @access   Private
+router.get(
+    '/stats',
+    auth,
+    developerController.getDeveloperStats 
+);
 
 // @route    GET api/developers
 // @desc     Get all developers for the current user (with filtering)
@@ -11,7 +20,7 @@ const developerController = require('../controllers/devController');
 router.get(
     '/',
     auth,
-    developerController.getDevelopers // Using the 'getDevelopers' function from the controller
+    developerController.getDevelopers
 );
 
 // @route    POST api/developers
@@ -20,7 +29,7 @@ router.get(
 router.post(
     '/',
     auth,
-    developerController.addDeveloper // Using the 'addDeveloper' function
+    developerController.addDeveloper
 );
 
 // @route    PUT api/developers/:id
@@ -29,7 +38,7 @@ router.post(
 router.put(
     '/:id',
     auth,
-    developerController.updateDeveloper // Using the 'updateDeveloper' function
+    developerController.updateDeveloper
 );
 
 // @route    DELETE api/developers/:id
@@ -38,7 +47,7 @@ router.put(
 router.delete(
     '/:id',
     auth,
-    developerController.deleteDeveloper // Using the 'deleteDeveloper' function
+    developerController.deleteDeveloper
 );
 
 module.exports = router;
