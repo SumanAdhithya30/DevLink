@@ -58,7 +58,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 pt-20">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 text-white flex flex-col">
         <h1 className="text-2xl font-bold p-4 border-b border-gray-700">

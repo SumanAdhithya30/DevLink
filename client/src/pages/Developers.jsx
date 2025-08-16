@@ -104,7 +104,7 @@ const Developers = () => {
   }, []);
   
   const renderModal = (title, fields, onConfirm, onCancel, confirmText, confirmColor) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500/50 backdrop-blur-sm">
       <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md transform transition-all">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">{title}</h2>
         <div className="space-y-4"> {/* FIX: Corrected className */}
@@ -192,7 +192,7 @@ const Developers = () => {
         
         {/* MODIFICATION: Restored the full View Modal JSX */}
         {showViewModal && selectedDeveloper && ( 
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-75"> 
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/75"> 
             <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md transform transition-all"> 
               <h2 className="text-2xl font-bold text-gray-800 mb-4">{selectedDeveloper.name}</h2> 
               <div className="space-y-3 text-gray-700"> 
